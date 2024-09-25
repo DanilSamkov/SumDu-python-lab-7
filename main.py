@@ -6,11 +6,22 @@ def print_students(students):
     if not students:
         print("Словник порожній.")
         return
+
+    # Виводимо заголовки для таблиці
+    print(f"{'Прізвище та Ім\'я'.ljust(25)} {'По батькові'.ljust(15)} {'Дата народження'}")
+    print("-" * 65)
+
+    # Виводимо дані про кожного студента
     for key, value in students.items():
-        print(f"{key}: {value}")
+        surname_name = key.ljust(25)
+        patronymic = value['По батькові'].ljust(15)
+        birth_date = value['дата народження'].strftime("%Y-%m-%d")
+        print(f"{surname_name} {patronymic} {birth_date}")
+
+    print("-" * 65)
 
 
-# Функція для додавання нового запису до словника з перевіркою на літери
+# Функція для додавання нового запису до словника з перевіркою
 def add_student(students):
     surname = input("Введіть прізвище: ")
     if not surname.isalpha():
@@ -35,12 +46,20 @@ def add_student(students):
         return
 
     key = surname + " " + name
+
+    # Перевірка, чи існує вже запис про цього учня
+    if key in students:
+        print(f"Запис про {surname} {name} вже існує.")
+        return
+
+    # Додавання нового запису
     students[key] = {
         'Прізвище': surname,
         "Ім'я": name,
         'По батькові': patronymic,
         'дата народження': birth_date
     }
+    print(f"Новий запис про {surname} {name} додано.")
 
 
 # Функція для видалення запису зі словника
@@ -58,10 +77,23 @@ def delete_student(students):
 
 # Функція для перегляду вмісту словника за відсортованими ключами
 def view_sorted_students(students):
-    sorted_keys = sorted(students.keys())
-    for key in sorted_keys:
-        print(f"{key}: {students[key]}")
+    if not students:
+        print("Словник порожній.")
+        return
 
+    sorted_keys = sorted(students.keys())
+
+    print(f"{'Прізвище та Ім\'я'.ljust(25)} {'По батькові'.ljust(15)} {'Дата народження'}")
+    print("-" * 70)
+
+    for key in sorted_keys:
+        student = students[key]
+        surname_name = key.ljust(25)
+        patronymic = student['По батькові'].ljust(15)
+        birth_date = student['дата народження'].strftime("%Y-%m-%d")
+        print(f"{surname_name} {patronymic} {birth_date}")
+
+    print("-" * 65)
 
 # Функція для перевірки, чи є в класі учні з днем народження сьогодні
 def check_birthdays_today(students):
@@ -75,7 +107,6 @@ def check_birthdays_today(students):
         print("Сьогодні немає іменинників.")
 
 
-# Основна програма
 def main():
     students = {
         "Барна Лариса": {'Прізвище': 'Барна', "Ім'я": 'Лариса', 'По батькові': 'Тимурівна',
